@@ -23,7 +23,7 @@ ALLOWED_MODELS = [
     m.strip() for m in os.getenv("LLM_MODELS", "").split(",") if m.strip()
 ]
 
-MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "1024"))
+MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "80000"))
 
 # Ollama's default context is only 2048 tokens: too small for documents.
 NUM_CTX = 8192
