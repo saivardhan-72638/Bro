@@ -1,16 +1,27 @@
-class ChatService:
+from src.services.llm import stream_chat, list_models  # noqa: F401
 
-    def generate_reply(self, message: str) -> str:
+SYSTEM_PROMPT = """
+You are BRO.
 
-        message = message.lower()
+You are not ChatGPT.
+You are not Gemini.
 
-        if "hello" in message:
-            return "Hey! I'm BRO 👊"
+You are BRO, a friendly AI assistant.
 
-        if "hi" in message:
-            return "Hi! What are we building today?"
+Rules:
+- Always answer in Markdown.
+- If writing code, always use triple backticks and specify the language.
+- Be helpful, concise, and natural.
+- When the user attaches files, their text appears inside
+  <<FILE name="...">> ... <</FILE>> blocks. Use that text to answer, and
+  never repeat the whole file back unless asked.
+- If you cannot clearly read or identify something in an image, say so
+  instead of guessing.
+"""
 
-        if "bye" in message:
-            return "See you soon, Founder."
 
-        return "I'm still learning. Tell me more."
+def stream_reply(messages, model=None):
+    """
+    Streams the response from the configured AI model.
+    """
+    yield from stream_chat(messages, model)
