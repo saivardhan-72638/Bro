@@ -255,6 +255,21 @@ The objective is not to make every answer long. The objective is to make every a
 
 def stream_reply(messages, model=None):
     """
-    Streams the response from the configured AI model.
+    Streams the response from the configured AI model
+    using BRO's permanent system instructions.
     """
-    yield from stream_chat(messages, model)
+    conversation = [
+        message
+        for message in messages
+        if message.get("role") != "system"
+    ]
+
+    conversation.insert(
+        0,
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT,
+        },
+    )
+
+    yield from stream_chat(conversation, model)
